@@ -13,23 +13,24 @@ class GameSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(new Board(new TestTokenFactory()), new \DateTimeImmutable());
+        $this->beConstructedWith(new Board(new TestTokenFactory()), time());
     }
 
     function it_should_end_after_60_seconds()
     {
-        $this->makeMove(7, new \DateTimeImmutable());
+        $this->beConstructedWith(new Board(new TestTokenFactory()), 0);
+        $this->shouldThrow()->during("makeMove", array(6));
     }
 
     function it_should_end_after_5_unsuccessful_moves()
     {
         for ($i=0; $i<=5; $i++) {
-            $this->makeMove($i, new \DateTimeImmutable());
+            $this->makeMove($i);
         }
     }
 
     function it_should_end_after_win()
     {
-        $this->makeMove(6, new \DateTimeImmutable());
+        $this->makeMove(6);
     }
 }

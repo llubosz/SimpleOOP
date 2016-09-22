@@ -24,23 +24,29 @@ final class Game
     private $isWon;
 
     /**
-     * @var \DateTimeImmutable
+     * @var int
      */
     private $startTime;
 
-    public function __construct(Board $board, \DateTimeImmutable $startTime)
+    public function __construct(Board $board,  $startTime)
     {
         $this->board = $board;
         $this->isRunning = true;
         $this->startTime = $startTime;
     }
 
-    public function makeMove(int $position, \DateTimeImmutable $time)
+    public function makeMove(int $position)
     {
+        if ($this->startTime+60 < $this->getCurrentTime())
+        {
+            $this->isRunning = false;
+            throw new GameOverException("Timeout reached");
+        }
+
         if (!$this->isRunning) {
             throw new GameOverException("Game is over");
         }
-        
+
         try
         {
             $this->board->flipTokenAtPosition($position);
@@ -57,10 +63,13 @@ final class Game
         }
     }
 
-    public function stillPlaying() : bool {
-
+    public function stillPlaying() : bool
+    {
         return $this->isRunning;
     }
 
-
+    protected function getCurrentTime()
+    {
+        return time();
+    }
 }

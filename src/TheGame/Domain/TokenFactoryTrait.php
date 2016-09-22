@@ -8,8 +8,6 @@ trait TokenFactoryTrait
     {
         $winningTokenIndex = self::getRandomIndex($quantity);
 
-        echo $winningTokenIndex;
-
         for ($i=0; $i<$quantity; $i++)
         {
             if ($i === $winningTokenIndex) {
@@ -19,7 +17,6 @@ trait TokenFactoryTrait
                 $tokens[] = new Token(false);
             }
         }
-
         return $tokens;
     }
 }
